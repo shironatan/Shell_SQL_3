@@ -17,7 +17,6 @@ Colum(){
 	#カラムをきれいにする
 	local colum_list=`sed -n '2p' $1`
 	colum=`echo $colum_list | cut -d' ' -f1`
-	echo $colum
 	if [ "$colum" != "SELECT" ] && [ "$colum" != "select" ]
 	then
 		echo "2行目にSELECT文があるファイルにしてください"
@@ -28,11 +27,9 @@ Colum(){
 	do
 		if [ "AS" == `echo $colum_list | cut -d' ' -f$(( $i + 1 ))` ] #ASがある場合
 		then
-			echo $colum
 			ARRAY+=(`echo $colum_list | awk '{print $'$(( $i + 2 ))'}' | sed 's/,//'`)
 			i=$(( $i + 3 ))
 		else
-			echo $colum
 			ARRAY+=(`echo $colum | sed 's/,//'`)
 			i=$(( $i + 1 ))
 		fi
@@ -87,12 +84,12 @@ Update_SQL(){
 	done
 	#組み立て
 	local tail1 tail2
-	tail1=`tail -n 1 $SQLFILE`
-	tail2=`tail -n 1 $SQLFILE | sed 's/;//'`
+	tail1=`tail -n 1 $1`
+	tail2=`tail -n 1 $1 | sed 's/;//'`
 	{ cat $1 | sed -e "s/$tail1/$tail2/";
 		echo "$ordersql;";
 	} > okikae.sql
-	cp okikae.sql $SQLFILE
+	cp okikae.sql $1
 	rm -f okikae.sql
 
 }
@@ -102,3 +99,5 @@ File $file
 Colum $SQLFILE
 Sort
 Update_SQL $SQLFILE
+echo -e "------------\nファイル名：$SQLFILE"
+cat $SQLFILE

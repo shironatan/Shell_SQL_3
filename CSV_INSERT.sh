@@ -201,7 +201,7 @@ Insert_colum(){
 	local a=0
 	while [ $a -lt $COLUM ]
 	do
-		read -p "`expr $a + 1`番目の項目名：" colum
+		read -p "$(( $a + 1 ))番目の項目名：" colum
 		Check_colum $1 $2 $colum
 		SET+=("$colum")
 		let a++

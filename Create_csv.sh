@@ -47,7 +47,7 @@ CSV(){
 #ファイル存在判定
 Create_File(){
 	local file_name
-	read -p "ファイル名を指定(拡張子なしで) : " file_Name
+	read -p "ファイル名を指定(拡張子なし) : " file_Name
 	if [ -e "$file_Name.csv" ]
 	then
 		echo "既に存在するファイル名です。"
@@ -62,7 +62,7 @@ Int $gyo
 read -p "列数を指定 : " retu
 Int $retu
 Create_File
-echo "$gyo行$retuの$FILEを作成します"
+echo "$gyo行$retu列の$FILEを作成します"
 CSV $gyo $retu
 echo "----------------------"
 echo "ファイル名：$FILE"
