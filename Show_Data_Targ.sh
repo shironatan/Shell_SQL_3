@@ -122,6 +122,7 @@ function Check_Colum(){
 function Exec_SQL(){
 	local file=".my.cnf"
 	local ret
+	echo -e "use $1;\nSELECT * FROM $2 WHERE $3 = '$4';\nを実行した結果"
 	mysql --defaults-extra-file=./$file -u $USER -e "use $1;SELECT * FROM $2 WHERE $3 = '$4';"
 }
 
@@ -136,6 +137,6 @@ Show_TableData $Show_DB $Show_Table
 read -p "条件項目名を入力：" where </dev/tty
 Check_Colum $Show_DB $Show_Table $where
 read -p "条件項目内容を入力：" where2 </dev/tty
-echo -e "---------------------\n実行結果"
+echo -e "---------------------"
 Exec_SQL $Show_DB $Show_Table $where $where2
 

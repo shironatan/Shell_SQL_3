@@ -152,7 +152,7 @@ function Targ_Colum(){
 		TARG_COLUM+=($colum)
 		read -p "条件項目内容：" colum
 		TARG_COLUM+=($colum)
-		read -p "$2条件項目名[無し/終了:q]：" colum
+		read -p "条件項目名[無し/終了:q]：" colum
 	done
 }
 #抽出項目を決める(引数：データーベース名 テーブル名)
@@ -161,7 +161,7 @@ function COLUM(){
 	local cname
 	Show_TableInf $1 $2
 	echo "集合関数は直接入力"
-	read -p "$2テーブル抽出項目名[終了:q]：" colum
+	read -p "抽出項目名[終了:q]：" colum
 	#テーブル内の表示項目を決める
 	while [ "$colum" != "q" ]
 	do
@@ -177,7 +177,7 @@ function COLUM(){
 			read -p "$colum項目の表示名[項目名と同一:q]：" cname
 			SHOW_COLUM+=($cname)
 		fi
-		read -p "$2テーブル抽出項目名[終了:q]：" colum
+		read -p "抽出項目名[終了:q]：" colum
 	done
 	#抽出項目判定
 	if [ ${#SHOW_COLUM[@]} -eq 0 ] && [ ${#AGG_COLUM[@]} -eq 0 ]
@@ -193,17 +193,21 @@ function Create_sql(){
 	FROM="FROM $2"
 	SQL_1
 	SQL_3
-	echo -e "---------------\n実行結果"
+	echo -e "---------------"
 	if [ 0 -eq ${#TARG_COLUM[@]} ] && [ 0 -eq ${#AGG_COLUM[@]} ] #条件と集合関数がない場合
 	then
+		echo -e "use $1;\n$SELECT $FROM;\nを実行した結果"
 		mysql --defaults-extra-file=./$file -u $USER -e "use $1;$SELECT $FROM;"
 	elif [ 0 -eq ${#TARG_COLUM[@]} ] #条件がない場合
 	then
+		echo -e "use $1;\n$SELECT $FROM $GROUP;\nを実行した結果"
 		mysql --defaults-extra-file=./$file -u $USER -e "use $1;$SELECT $FROM $GROUP;"
 	elif [ 0 -eq ${#AGG_COLUM[@]} ] #集合関数がない場合
 	then
+		echo -e "use $1;\n$SELECT $FROM $WHERE;\nを実行した結果"
 		mysql --defaults-extra-file=./$file -u $USER -e "use $1;$SELECT $FROM $WHERE;"
 	else
+		echo -e "use $1;\n$SELECT $FROM $WHERE $GROUP;\nを実行した結果"
 		mysql --defaults-extra-file=./$file -u $USER -e "use $1;$SELECT $FROM $WHERE $GROUP;"
 	fi
 }
